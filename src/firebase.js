@@ -34,6 +34,7 @@ export const start = () =>
         document.getElementById("loader").style.display = "none";
       },
     },
+    // signInSuccessUrl: "/home",
     signInOptions: [
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,

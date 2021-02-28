@@ -1,0 +1,11 @@
+.unit {
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
