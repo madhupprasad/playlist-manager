@@ -1,70 +1,75 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from 'react-router-dom';
-import { firebase } from "@firebase/app";
-import { AuthContext } from "./index";
-const firebaseui = require("firebaseui");
+import React, { Component } from "react";
+import * as $ from "jquery";
+import { authEndpoint, clientId, redirectUri, scopes } from "./config";
+import hash from "./hash";
+import Player from "./Player";
+import "./App.css";
 
-
-var firebaseConfig = {
-  apiKey: "AIzaSyCSAiluZEiptP0x0moBCUcGY07AY468_lY",
-  authDomain: "playlist-manager-1.firebaseapp.com",
-  projectId: "playlist-manager-1",
-  storageBucket: "playlist-manager-1.appspot.com",
-  messagingSenderId: "437556427667",
-  appId: "1:437556427667:web:56a70155ae21dcca018666",
-  measurementId: "G-BPQ19M8WTD",
-};
-
-firebase.initializeApp(firebaseConfig);
-const ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-
-const App = () => {
-  
-  const history = useHistory();
-  const [ currentauth, setCurrentAuth ] = useState(false);
-  const { auth, setauth } = React.useContext(AuthContext);
-
-  const stateupdate = () => {
-    setCurrentAuth(true);
-    console.log("Called");
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      token: null,
+      playlists: [],
+      no_data: false,
+    };
+    this.getAllPlaylist = this.getAllPlaylist.bind(this);
   }
 
-  useEffect(()=>{
-    if(currentauth){
-      setauth(currentauth);
-      history.push("/playlists");
+  componentDidMount() {
+    // Set token
+    let _token = hash.access_token;
+
+    if (_token) {
+      // Set token
+      this.setState({
+        token: _token,
+      });
+      this.getAllPlaylist(_token);
     }
-  },[currentauth])
+  }
 
-  useEffect(()=> {
-      if(!auth){
-        ui.start("#firebaseui", {
-          callbacks: {
-            signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-              stateupdate();
-              return false;
-            },
-            uiShown: function () {
-              document.getElementById("loader").style.display = "none";
-            },
-          },
-          signInOptions: [
-            firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          ],
-          signInSuccessUrl: '/playlists'
-        });
-      }
-    },[])
+  componentWillUnmount() {
+    // clear the interval to save resources
+    clearInterval(this.interval);
+  }
 
-  return (
-    
-      <div>
-        <div id="firebaseui"></div>
-        <div id="loader">Loading...</div>
+  async getAllPlaylist(token) {
+    // Make a call using the token
+    let result;
+
+    result = await $.ajax({
+      url: "https://api.spotify.com/v1/me/playlists",
+      type: "GET",
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
+      },
+    });
+    this.setState({
+      playlists: result.items,
+    });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        {!this.state.token && (
+          <a
+            className="btn btn--loginApp-link"
+            href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+              "%20"
+            )}&response_type=token&show_dialog=true`}
+          >
+            Login to Spotify
+          </a>
+        )}
+        {this.state.token && !this.state.no_data && (
+          <Player playlists={this.state.playlists} token={this.state.token} />
+        )}
+        {this.state.no_data && <p></p>}
       </div>
     );
+  }
 }
 
 export default App;

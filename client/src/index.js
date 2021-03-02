@@ -1,23 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import MainRouter from './routes';
-
-export const AuthContext = React.createContext({})
-
-const IndexPage = () => {
-
-    const [auth, setauth] = useState(false);
-
-    return (
-      <AuthContext.Provider value={{ auth, setauth }}>
-        <MainRouter />
-      </AuthContext.Provider>
-    )
-}
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
-  <IndexPage />,
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
   document.getElementById("root")
 );
 
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
