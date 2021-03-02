@@ -4,6 +4,7 @@ export default function adaptRequest(req ={}){
         method: req.method,
         queryParams: req.query,
         pathParams: req.params,
-        body: req.body
+        body: req.body,
+        userid: req.userid
     });
 }
