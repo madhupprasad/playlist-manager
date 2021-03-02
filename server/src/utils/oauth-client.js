@@ -7,6 +7,6 @@ export default function getOauthClient(){
         //Client-secret
         process.env.CLIENT_SECRET,
         //Redirect-uri
-        process.env.REDIRECT_URI
+        process.env.REDIRECT_URL
     );
 }

@@ -6,7 +6,7 @@ export default function getAuthUrl({ authClient = {}, scopes=[], req }){
     }else{
         return authClient.generateAuthUrl({
             access_type:"offline",
-            scopes:scopes,
+            scope:scopes,
             state: JSON.stringify({
                 callbackUrl: req.body.callbackUrl,
                 userId: req.body.userid

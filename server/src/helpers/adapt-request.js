@@ -1,5 +1,6 @@
 export default function adaptRequest(req ={}){
     return Object.freeze({
+        url: req.url,
         path: req.path,
         method: req.method,
         queryParams: req.query,
