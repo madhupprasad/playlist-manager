@@ -6,11 +6,13 @@ export default async function makeYoutubeCallbackUrl({ authClient, httpRequest }
             const { email, token } = await getAuthToken({ authClient, req: httpRequest })
             if(email && token){
                 return {
-                    success: true
+                    success: true,
+                    email,
+                    token
                 }
             }else{
                 return {
-                    success: false
+                    success: false,
                 }
             }
         default:
