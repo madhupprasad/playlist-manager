@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Player.css";
+import "../styles/Player.css";
 import * as $ from "jquery";
 
 const Player = (props) => {
