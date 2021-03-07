@@ -1,23 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import "./styles/App.css";
-import Home from "./views/home";
-import { startFirebaseUI } from "./components/firebase.js";
-import { Router } from "@reach/router";
-import { Login } from "./views/login";
+import { Routes } from "./routes";
 
-class App extends Component {
-  componentDidMount() {
-    startFirebaseUI();
-  }
-
-  render() {
-    return (
-      <Router>
-        <Login path="/"></Login>
-        <Home path="/home"></Home>
-      </Router>
-    );
-  }
+function App() {
+	return <Routes></Routes>;
 }
 
 export default App;
