@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "./styles/index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import { MainRouter } from "./routes";
+import { getSessionCookie, SessionContext } from "./components/sessions";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const IndexPage = () => {
+	const [session, setSession] = useState(getSessionCookie());
+	useEffect(() => {
+		setSession(getSessionCookie());
+	}, [session]);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+	return (
+		<SessionContext.Provider value={session}>
+			<div style={{ textAlign: "center" }}>
+				<h1>
+					{session.email && (
+						<h1>
+							{session.email.substring(
+								0,
+								session.email.indexOf("@")
+							)}
+						</h1>
+					)}
+				</h1>
+				{!session.email && <h1>Hello Stranger! </h1>}
+			</div>
+			<MainRouter></MainRouter>
+		</SessionContext.Provider>
+	);
+};
+
+ReactDOM.render(<IndexPage />, document.getElementById("root"));
