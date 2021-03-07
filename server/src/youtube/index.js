@@ -19,7 +19,7 @@ async function youtubeLinkController(req,res){
 }
 
 async function youtubePlaylistController(req,res){
-    const httpRequest = adaptRequest(req)
+    const httpRequest = adaptRequest(req);
     if(req.session.email && req.session.token){
         const { headers, statusCode, data } = await youtubeAllPlaylistEndpoint({ httpRequest, access_token: req.session.token })
         res
@@ -43,6 +43,17 @@ async function youtubeAuthCallback(req,res){
     res
         .status(200)
         .send({ success })
+}
+
+async function youtubeSinglePlaylistController(req,res){
+    const httpRequest = adaptRequest(req);
+    if(req.session.email && req.session.token){
+        
+    }else{
+        res
+            .status(403)
+            .send({ success: false })
+    }
 }
 
 export { youtubeLinkController, youtubePlaylistController, youtubeAuthCallback };
