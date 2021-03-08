@@ -1,19 +1,21 @@
 import * as Cookies from "js-cookie";
 import React from "react";
 
-export const setSessionCookie = (session) => {
-	Cookies.remove("session");
-	Cookies.set("session", session, { expires: 14 });
+export const setSessionCookie = ({ key, value }) => {
+	Cookies.remove(key);
+	Cookies.set(key, value, { expires: 14 });
 };
 
-export const getSessionCookie = () => {
-	const sessionCookie = Cookies.get("session");
+export const getSessionCookie = ({ key }) => {
+	const sessionCookie = Cookies.get(key);
 
 	if (sessionCookie === undefined) {
-		return {};
+		return null;
 	} else {
-		return JSON.parse(sessionCookie);
+		return sessionCookie;
 	}
 };
 
-export const SessionContext = React.createContext(getSessionCookie());
+export const SessionContext = React.createContext(
+	getSessionCookie({ key: "email" })
+);

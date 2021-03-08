@@ -2,17 +2,30 @@ import React, { useState, useEffect } from "react";
 import { authEndpoint, clientId, redirectUri, scopes } from "../config/config";
 import hash from "../components/hash";
 import Playlist from "./playlist";
-import { SessionContext } from "../components/sessions";
+import {
+	getSessionCookie,
+	SessionContext,
+	setSessionCookie,
+} from "../components/sessions";
+import { useHistory } from "react-router";
 
 export const Landing = () => {
-	const token = hash.access_token;
+	let token = hash.access_token;
 	const [playlist, setPlaylist] = useState([]);
 	const session = React.useContext(SessionContext);
+	const history = useHistory();
 
 	useEffect(() => {
+		console.log(session);
+		if (!session) {
+			history.push("/");
+		}
+
 		const abortController = new AbortController();
 		const signal = abortController.signal;
 		if (token) {
+			console.log(token);
+			// setSessionCookie({ key: "stoken", value: token });
 			fetch(
 				"https://api.spotify.com/v1/me/playlists",
 				{
@@ -25,8 +38,6 @@ export const Landing = () => {
 			)
 				.then((res) => res.json())
 				.then((res) => setPlaylist(res.items));
-
-			// getAllPlaylist(token).then((data) => setPlaylist(data));
 		}
 		return function cleanup() {
 			abortController.abort();

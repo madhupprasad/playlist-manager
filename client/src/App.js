@@ -13,14 +13,13 @@ const App = () => {
 	const session = React.useContext(SessionContext);
 
 	const stateupdate = (email) => {
-		setSessionCookie({ email });
+		setSessionCookie({ key: "email", value: email });
 		console.log("Called");
-		history.push("/landing");
 	};
 
 	useEffect(() => {
 		console.log(session);
-		if (!session.email) {
+		if (!session) {
 			ui.start("#firebaseui-auth-container", {
 				callbacks: {
 					signInSuccessWithAuthResult: function (
@@ -28,7 +27,7 @@ const App = () => {
 						redirectUrl
 					) {
 						stateupdate(authResult.user.email);
-						return false;
+						return true;
 					},
 					uiShown: function () {
 						document.getElementById("loader").style.display =

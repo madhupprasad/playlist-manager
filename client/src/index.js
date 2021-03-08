@@ -5,25 +5,12 @@ import { MainRouter } from "./routes";
 import { getSessionCookie, SessionContext } from "./components/sessions";
 
 const IndexPage = () => {
-	const [session, setSession] = useState(getSessionCookie());
-	useEffect(() => {
-		setSession(getSessionCookie());
-	}, [session]);
+	const [session, setSession] = useState(getSessionCookie({ key: "email" }));
 
 	return (
 		<SessionContext.Provider value={session}>
-			<div style={{ textAlign: "center" }}>
-				<h1>
-					{session.email && (
-						<h1>
-							{session.email.substring(
-								0,
-								session.email.indexOf("@")
-							)}
-						</h1>
-					)}
-				</h1>
-				{!session.email && <h1>Hello Stranger! </h1>}
+			<div>
+				<h1>Welcome</h1>
 			</div>
 			<MainRouter></MainRouter>
 		</SessionContext.Provider>
