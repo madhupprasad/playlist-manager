@@ -45,15 +45,4 @@ async function youtubeAuthCallback(req,res){
         .send({ success })
 }
 
-async function youtubeSinglePlaylistController(req,res){
-    const httpRequest = adaptRequest(req);
-    if(req.session.email && req.session.token){
-        
-    }else{
-        res
-            .status(403)
-            .send({ success: false })
-    }
-}
-
 export { youtubeLinkController, youtubePlaylistController, youtubeAuthCallback };

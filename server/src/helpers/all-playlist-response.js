@@ -5,7 +5,8 @@ export default function allPlaylistsResponse({ data }){
                 id: item.id,
                 title: item.snippet.title,
                 thumbnail: item.snippet.thumbnails.standard,
-                count: item.contentDetails.itemCount
+                count: item.contentDetails.itemCount,
+                resourceId: item.snippet?.resourceId?.videoId
             }
         )
     })
